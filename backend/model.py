@@ -18,8 +18,8 @@ from sklearn.metrics import classification_report
 from preprocess import clean_text
 
 # Paths where trained model/vectorizer are saved
-MODEL_PATH = "hate_speech_model.joblib"
-VECTORIZER_PATH = "tfidf_vectorizer.joblib"
+MODEL_PATH = "hate_speech_model_v2.joblib"
+VECTORIZER_PATH = "tfidf_vectorizer_v2.joblib"
 
 # ── Labels ───────────────────────────────────────────────────────────
 LABELS = {0: "hate speech", 1: "offensive language", 2: "neutral"}
