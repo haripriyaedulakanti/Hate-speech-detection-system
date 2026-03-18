@@ -66,6 +66,12 @@ TRAIN_DATA = [
     ("go fuck yourself you piece of shit", 1),
     ("bullshit you are a motherfucker", 1),
     ("fuck u aashole", 1),
+    
+    # NEW TELUGU (TENGLISH) EXAMPLES
+    ("dengey ra pooka", 1),
+    ("neeku asalu burra ledu", 1),
+    ("entra nee overaction", 1),
+    
     ("that was the dumbest thing ive ever heard you fool", 1),
     ("what an absolute buffoon you are completely useless", 1),
     ("go to hell you worthless excuse for a human being", 1),
@@ -108,6 +114,9 @@ TRAIN_DATA = [
     ("learning new skills every day makes life more meaningful", 2),
     ("the community came together to clean up the local park", 2),
     ("innovation and creativity drive progress in our modern world", 2),
+    ("nuvvu chala manche vadivi", 2),
+    ("ivvala climate chala bagundi", 2),
+    ("nenu roju coding chestanu", 2)
 ]
 
 
