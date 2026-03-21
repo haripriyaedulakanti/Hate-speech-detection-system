@@ -36,7 +36,7 @@ def clean_text(text: str) -> str:
 
     # Remove punctuation and special characters
     text = text.translate(str.maketrans("", "", string.punctuation))
-    text = re.sub(r"[^a-z\s]", "", text)
+    text = re.sub(r"[^a-z\u0C00-\u0C7F\s]", "", text)
 
     # Tokenize
     tokens = text.split()

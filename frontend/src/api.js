@@ -5,8 +5,8 @@
  */
 import axios from 'axios';
 
-// Use environment variable for production, fallback to public localtunnel URL
-const API_URL = import.meta.env.VITE_API_URL || 'https://plenty-schools-watch.loca.lt';
+// Use environment variable for production, fallback to localhost for development
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 /**
  * Send raw text to the backend for hate speech analysis.

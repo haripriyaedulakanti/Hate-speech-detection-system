@@ -18,8 +18,8 @@ from sklearn.metrics import classification_report
 from preprocess import clean_text
 
 # Paths where trained model/vectorizer are saved
-MODEL_PATH = "hate_speech_model_v2.joblib"
-VECTORIZER_PATH = "tfidf_vectorizer_v2.joblib"
+MODEL_PATH = "hate_speech_model_v5.joblib"
+VECTORIZER_PATH = "tfidf_vectorizer_v5.joblib"
 
 # ── Labels ───────────────────────────────────────────────────────────
 LABELS = {0: "hate speech", 1: "offensive language", 2: "neutral"}
@@ -71,6 +71,25 @@ TRAIN_DATA = [
     ("dengey ra pooka", 1),
     ("neeku asalu burra ledu", 1),
     ("entra nee overaction", 1),
+    ("lanja kodaka", 0), # Hate / severe offensive
+    ("nee yabba", 1),
+    ("erri pooka", 1),
+    ("modda gudu", 0),
+    ("gudda balisinda", 1),
+    ("howla gallara", 1),
+    ("pichi munda", 1),
+    
+    # NEW TELUGU (NATIVE SCRIPT) EXAMPLES
+    ("దెంగేయ్ రా పూక", 1),
+    ("నీకు అసలు బుర్ర లేదు", 1),
+    ("ఏంట్రా నీ ఓవరాక్షన్", 1),
+    ("లంజ కొడక", 0),
+    ("నీ యబ్బా", 1),
+    ("ఎర్రి పూక", 1),
+    ("మొడ్డ గుడు", 0),
+    ("గుద్ద బలిసిందా", 1),
+    ("హౌలే గాళ్ళరా", 1),
+    ("పిచ్చి ముండ", 1),
     
     ("that was the dumbest thing ive ever heard you fool", 1),
     ("what an absolute buffoon you are completely useless", 1),
@@ -142,8 +161,9 @@ def train_model():
 
     # TF-IDF vectorizer
     vectorizer = TfidfVectorizer(
-        max_features=5000,
-        ngram_range=(1, 2),   # unigrams + bigrams
+        max_features=10000,
+        analyzer="char_wb",
+        ngram_range=(3, 5),   # character n-grams to catch spelling variations
         min_df=1,
     )
     X_train_tfidf = vectorizer.fit_transform(X_train)
@@ -171,13 +191,20 @@ def train_model():
     return model, vectorizer
 
 
+_MODEL = None
+_VECTORIZER = None
+
 def load_model():
     """Load saved model and vectorizer, training first if needed."""
+    global _MODEL, _VECTORIZER
+    if _MODEL is not None and _VECTORIZER is not None:
+        return _MODEL, _VECTORIZER
+
     if not os.path.exists(MODEL_PATH) or not os.path.exists(VECTORIZER_PATH):
         train_model()
-    model      = joblib.load(MODEL_PATH)
-    vectorizer = joblib.load(VECTORIZER_PATH)
-    return model, vectorizer
+    _MODEL = joblib.load(MODEL_PATH)
+    _VECTORIZER = joblib.load(VECTORIZER_PATH)
+    return _MODEL, _VECTORIZER
 
 
 def predict(text: str):
