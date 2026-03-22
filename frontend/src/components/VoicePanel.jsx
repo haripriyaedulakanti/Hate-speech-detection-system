@@ -18,6 +18,7 @@ export default function VoicePanel() {
   const [transcription, setTranscription] = useState('');
   const [error, setError] = useState('');
   const [seconds, setSeconds] = useState(0);
+  const [language, setLanguage] = useState('en-IN');
 
   const mediaRecorderRef = useRef(null);
   const chunksRef         = useRef([]);
@@ -116,7 +117,7 @@ export default function VoicePanel() {
   const handleRecordingStop = async () => {
     try {
       const audioBlob = await exportWav(chunksRef.current);
-      const data = await analyzeVoice(audioBlob);
+      const data = await analyzeVoice(audioBlob, language);
       setTranscription(data.transcribed_text || '');
       setResult(data);
     } catch (err) {
@@ -142,6 +143,20 @@ export default function VoicePanel() {
           <h2 className="panel-title">Voice Analysis</h2>
           <p className="panel-subtitle">Record your voice – AI will detect hate speech</p>
         </div>
+      </div>
+
+      {/* Language Selector */}
+      <div className="language-selector">
+        <label htmlFor="voice-lang">Language: </label>
+        <select 
+          id="voice-lang" 
+          value={language} 
+          onChange={(e) => setLanguage(e.target.value)}
+          disabled={status !== STATE.IDLE}
+        >
+          <option value="en-IN">English (India)</option>
+          <option value="te-IN">Telugu (Native & Tenglish)</option>
+        </select>
       </div>
 
       {/* Visualizer / status area */}

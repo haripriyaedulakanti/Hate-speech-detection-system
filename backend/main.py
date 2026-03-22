@@ -10,7 +10,7 @@ Endpoints:
   GET  /health         – Server health check
 """
 
-from fastapi import FastAPI, HTTPException, UploadFile, File
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -77,11 +77,15 @@ def predict_text(request: TextRequest):
 
 
 @app.post("/predict-voice", response_model=VoiceResponse)
-async def predict_voice(file: UploadFile = File(...)):
+async def predict_voice(
+    file: UploadFile = File(...),
+    language: str = Form("en-IN")
+):
     """
     Accept an audio file, transcribe it, then detect hate speech.
 
     Form field: file (audio/wav, audio/webm, audio/ogg …)
+    Form field: language (e.g. "en-IN", "te-IN")
     """
     # Read uploaded audio bytes
     audio_bytes = await file.read()
@@ -90,7 +94,7 @@ async def predict_voice(file: UploadFile = File(...)):
 
     # Speech → text
     try:
-        transcribed_text = audio_to_text(audio_bytes)
+        transcribed_text = audio_to_text(audio_bytes, language=language)
     except ValueError as e:
         raise HTTPException(status_code=422, detail=str(e))
 

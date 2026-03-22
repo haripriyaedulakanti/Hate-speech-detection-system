@@ -304,3 +304,44 @@
   border: 1px solid rgba(139, 92, 246, 0.25);
   text-transform: capitalize;
 }
+
+/* Language Selector */
+.language-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: rgba(0,0,0,0.02);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  margin-bottom: 4px;
+}
+
+.language-selector label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.language-selector select {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-family: var(--font);
+  font-size: 0.9rem;
+  outline: none;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.language-selector select:focus {
+  border-color: var(--purple);
+}
+
+.language-selector select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

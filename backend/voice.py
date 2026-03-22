@@ -8,12 +8,13 @@ import io
 import speech_recognition as sr
 
 
-def audio_to_text(audio_bytes: bytes) -> str:
+def audio_to_text(audio_bytes: bytes, language: str = "en-IN") -> str:
     """
     Convert raw audio bytes (WAV / WebM / OGG) to text.
 
     Args:
         audio_bytes: Raw audio content from the uploaded file.
+        language: Language code to pass to Google Speech Recognition (default: "en-IN").
 
     Returns:
         Transcribed string, or raises ValueError if recognition fails.
@@ -29,13 +30,8 @@ def audio_to_text(audio_bytes: bytes) -> str:
             recognizer.adjust_for_ambient_noise(source, duration=0.3)
             audio_data = recognizer.record(source)
 
-        # Try Indian English first (handles English and Tenglish better)
-        try:
-            text = recognizer.recognize_google(audio_data, language="en-IN")
-        except sr.UnknownValueError:
-            # If that fails, try native Telugu
-            text = recognizer.recognize_google(audio_data, language="te-IN")
-            
+        # Use Google Web Speech API with the specified language
+        text = recognizer.recognize_google(audio_data, language=language)
         return text
 
     except sr.UnknownValueError:

@@ -22,13 +22,16 @@ export const analyzeText = async (text) => {
  * Send an audio file (Blob) to the backend for voice-based hate speech detection.
  * Backend converts it to text first, then predicts.
  * @param {Blob} audioBlob - The recorded audio blob.
+ * @param {string} language - The language to expect from the user (e.g. "en-IN" or "te-IN").
  * @returns {Promise<{transcribed_text: string, prediction: string, confidence: number}>}
  */
-export const analyzeVoice = async (audioBlob) => {
+export const analyzeVoice = async (audioBlob, language = 'en-IN') => {
   const formData = new FormData();
   formData.append('file', audioBlob, 'recording.wav');
+  formData.append('language', language);
   const response = await axios.post(`${API_URL}/predict-voice`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
   return response.data;
 };
+
