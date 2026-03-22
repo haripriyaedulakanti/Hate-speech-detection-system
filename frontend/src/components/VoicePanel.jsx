@@ -154,8 +154,8 @@ export default function VoicePanel() {
           onChange={(e) => setLanguage(e.target.value)}
           disabled={status !== STATE.IDLE}
         >
-          <option value="en-IN">English (India)</option>
-          <option value="te-IN">Telugu (Native & Tenglish)</option>
+          <option value="en-IN">English</option>
+          <option value="te-IN">Telugu</option>
         </select>
       </div>
 
