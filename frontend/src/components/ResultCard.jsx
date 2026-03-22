@@ -14,6 +14,7 @@ const LABEL_CONFIG = {
     color: 'danger',
     message: 'Warning! This content contains hate speech and may be harmful.',
     ttsMessage: 'Warning! Hate speech has been detected in this content.',
+    advice: '💡 Educational Note: Hate speech marginalizes and harms communities. Please use respectful and inclusive language.',
   },
   'offensive language': {
     emoji: '⚠️',
@@ -21,6 +22,7 @@ const LABEL_CONFIG = {
     color: 'warning',
     message: 'This content contains offensive language.',
     ttsMessage: 'Caution! This content contains offensive language.',
+    advice: '💡 Educational Note: Using offensive language can escalate conflicts. Consider rephrasing your thoughts constructively.',
   },
   'neutral': {
     emoji: '✅',
@@ -28,6 +30,7 @@ const LABEL_CONFIG = {
     color: 'success',
     message: 'This content appears to be safe and neutral.',
     ttsMessage: 'Content is safe. No harmful language detected.',
+    advice: null,
   },
 };
 
@@ -52,6 +55,22 @@ function highlightToxicWords(text) {
     }
     return <span key={i}>{word}</span>;
   });
+}
+
+function censorToxicWords(text) {
+  if (!text) return null;
+  const words = text.split(/(\s+)/);
+  return words.map(word => {
+    const clean = word.toLowerCase().replace(/[^a-z]/g, '');
+    if (TOXIC_WORDS.includes(clean)) {
+      let firstSeen = false;
+      return word.replace(/[a-zA-Z]/g, char => {
+        if (!firstSeen) { firstSeen = true; return char; }
+        return '*';
+      });
+    }
+    return word;
+  }).join('');
 }
 
 // Speak the verdict aloud using the browser's Speech Synthesis API
@@ -128,11 +147,26 @@ export default function ResultCard({ result, inputText }) {
         </div>
       )}
 
+      {/* Educational Advice */}
+      {config.advice && (
+        <div className="advice-section">
+          <p className="advice-text">{config.advice}</p>
+        </div>
+      )}
+
       {/* Highlighted text */}
       {inputText && (
         <div className="highlight-section">
           <h4 className="highlight-title">Analyzed Text</h4>
           <p className="highlight-text">{highlightToxicWords(inputText)}</p>
+        </div>
+      )}
+
+      {/* Safe Text Version (Only show if not neutral) */}
+      {inputText && predKey !== 'neutral' && (
+        <div className="safe-text-section">
+          <h4 className="safe-text-title">🛡️ Safe Version</h4>
+          <p className="safe-text-content">{censorToxicWords(inputText)}</p>
         </div>
       )}
 

@@ -1,5 +1,5 @@
 backend/venv/
 backend/__pycache__/
 frontend/node_modules/
-*.joblib
+# *.joblib removed so the model gets deployed
 .DS_Store

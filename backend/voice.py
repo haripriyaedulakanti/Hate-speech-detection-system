@@ -29,12 +29,17 @@ def audio_to_text(audio_bytes: bytes) -> str:
             recognizer.adjust_for_ambient_noise(source, duration=0.3)
             audio_data = recognizer.record(source)
 
-        # Use Google Web Speech API (free, no key needed)
-        text = recognizer.recognize_google(audio_data)
+        # Try Indian English first (handles English and Tenglish better)
+        try:
+            text = recognizer.recognize_google(audio_data, language="en-IN")
+        except sr.UnknownValueError:
+            # If that fails, try native Telugu
+            text = recognizer.recognize_google(audio_data, language="te-IN")
+            
         return text
 
     except sr.UnknownValueError:
-        raise ValueError("Could not understand audio. Please speak clearly and try again.")
+        raise ValueError("Could not understand audio. Please speak clearly, ensure your microphone is working, and try again.")
     except sr.RequestError as e:
         raise ValueError(f"Speech recognition service error: {e}")
     except Exception as e:

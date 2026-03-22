@@ -113,3 +113,29 @@ mark.toxic-highlight {
   border-color: var(--purple);
   transform: translateY(-1px);
 }
+
+/* Educational Advice & Safe Text */
+.advice-section {
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  background: rgba(139, 92, 246, 0.1);
+  border-left: 4px solid var(--purple);
+  border-radius: 4px;
+}
+.advice-text {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.safe-text-section { margin-bottom: 20px; }
+.safe-text-title { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+.safe-text-content {
+  background: rgba(16, 185, 129, 0.05); /* slightly green/success color */
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  line-height: 1.7;
+}
